@@ -2,18 +2,68 @@
   <div class="profile-posts">
     <div class="input-post-container">
       <div>
-        <textarea class="input-line" />
+        <textarea
+            v-model="inputText"
+            class="input-line"
+        />
       </div>
-      <button class="add-post-btn">
+      <button
+          @click="addPost"
+          class="add-post-btn"
+      >
         <fa icon="paper-plane" />
       </button>
+    </div>
+    <div class="posts-container">
+      <post-item
+          v-for="post in this.posts"
+          :post="post"
+          :key="post.id"
+      />
     </div>
   </div>
 </template>
 
 <script>
-export default {
+import PostItem from '@/components/Profile/PostItem.vue';
 
+export default {
+  data() {
+    return {
+      posts: [
+        {id: 3, text: "Hello there. Again...", date: "12-04-2022", likes: 11},
+        {id: 2, text: "The day is ending", date: "11-04-2022", likes: 3},
+        {id: 1, text: "Hello there. Whats up?", date: "11-04-2022", likes: 1},
+    ],
+      inputText: ''
+    }
+  },
+
+  components: {PostItem},
+
+  methods: {
+    addPost() {
+      const date = new Date();
+
+      const post = {
+        id: this.posts[0].id + 1,
+        text: this.inputText,
+        date: `${
+          date.getDate() >= 10
+              ? date.getDate()
+              : `0${date.getDate()}`
+        }-${
+          date.getMonth() + 1 >= 10
+              ? date.getMonth() + 1
+              : `0${date.getMonth() + 1}`
+        }-${date.getFullYear()}`,
+        likes: 0
+      }
+
+      this.posts.unshift(post);
+      this.inputText='';
+    }
+  }
 }
 </script>
 
@@ -24,6 +74,7 @@ export default {
 }
 .input-post-container {
   width: 100%;
+  margin-bottom: 15px;
   display: grid;
   grid-template-columns: 11fr 1fr;
   align-items: center;
