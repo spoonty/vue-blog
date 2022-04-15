@@ -1,6 +1,11 @@
 <template>
   <div class="navbar">
     <a class="navbar-title navbar-text" href="#">Navbar</a>
+    <div class="links">
+      <a class="navbar-text" href="#">Users</a>
+      <span style="margin: 0 10px; color: #f3f3f3;"> | </span>
+      <a class="navbar-text" href="#">Logout</a>
+    </div>
   </div>
 </template>
 
@@ -17,6 +22,7 @@ export default {
   background-color: #00c0c0;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .navbar-title {
   font-size: 30px;
@@ -27,5 +33,8 @@ export default {
   font-family: Tahoma;
   text-decoration: none;
   color: white;
+}
+.links {
+  margin-right: 20px
 }
 </style>

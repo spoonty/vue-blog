@@ -1,6 +1,6 @@
 <template>
   <div class="post-item">
-    <div class="post-text">{{post.text}}</div>
+    <div class="post post-text">{{post.text}}</div>
     <div class="post-data">
       <span class="post-date post-text">{{post.date}}</span>
       <span class="post-likes post-text">Likes: {{post.likes}}</span>
@@ -24,9 +24,12 @@ export default {
   margin-bottom: 15px;
   min-height: 50px;
   padding: 10px 15px;
-  width: 100%;
+  width: 85%;
   background-color: #f1f1f1;
   border-radius: 20px;
+}
+.post {
+
 }
 .post-data {
   margin-top: 7px;

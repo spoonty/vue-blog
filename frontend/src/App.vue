@@ -39,5 +39,13 @@ body, html, body #app {
 .content {
   height: 85%;
   width: 75%;
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+@media (max-width: 1200px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

@@ -23,12 +23,12 @@ export default {
 <style scoped>
 .profile-info {
   margin-top: 20px;
-  height: 40%;
+  height: 400px;
   display: grid;
-  grid-template-columns: 4fr 8fr;
+  grid-template-rows: 5fr 7fr;
 }
 .avatar-container {
-  justify-self: end;
+  justify-self: flex-start;
   margin-right: 10px;
 }
 .avatar {
@@ -36,6 +36,7 @@ export default {
 }
 .description-container {
   margin-left: 10px;
+  align-self: flex-start;
 }
 .profile-name {
   font-weight: bold;
@@ -50,5 +51,11 @@ export default {
 }
 .profile-text {
   font-family: Tahoma;
+}
+@media (max-width: 1200px) {
+  .profile-info {
+    height: 40%;
+    grid-template-columns: 4fr 8fr;
+  }
 }
 </style>

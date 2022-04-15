@@ -31,9 +31,7 @@ export default {
   data() {
     return {
       posts: [
-        {id: 3, text: "Hello there. Again...", date: "12-04-2022", likes: 11},
-        {id: 2, text: "The day is ending", date: "11-04-2022", likes: 3},
-        {id: 1, text: "Hello there. Whats up?", date: "11-04-2022", likes: 1},
+        {id: 1, text: "Hello. I fucked up my imagination...", date: "12-04-2022", likes: 0},
     ],
       inputText: ''
     }
@@ -46,7 +44,9 @@ export default {
       const date = new Date();
 
       const post = {
-        id: this.posts[0].id + 1,
+        id: this.posts[0] !== undefined
+            ? this.posts[0].id + 1
+            : 1,
         text: this.inputText,
         date: `${
           date.getDate() >= 10
@@ -76,12 +76,12 @@ export default {
   width: 100%;
   margin-bottom: 15px;
   display: grid;
-  grid-template-columns: 11fr 1fr;
-  align-items: center;
+  grid-template-columns: 85% 15%;
 }
 .input-line {
   width: 100%;
   min-height: 30px;
+  resize: none;
 }
 .add-post-btn {
   height: 50px;
@@ -101,5 +101,10 @@ export default {
 }
 .add-post-btn:active {
   background-color: #007070;
+}
+.posts-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 </style>
