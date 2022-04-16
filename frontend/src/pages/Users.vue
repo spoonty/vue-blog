@@ -1,11 +1,23 @@
 <template>
   <div class="content">
-    <user-item
-      v-for="user in users"
-      :user="user"
-      :key = "users.id"
-      @follow="followAction"
-    ></user-item>
+    <div class="users-list followed-list">
+      <h1 class="list-text">Following</h1>
+      <user-item
+          v-for="user in followedOnly"
+          :user="user"
+          :key = "users.id"
+          @follow="followAction"
+      ></user-item>
+    </div>
+    <div class="users-list unfollowed-list">
+      <h1 class="list-text">Users</h1>
+      <user-item
+          v-for="user in unfollowedOnly"
+          :user="user"
+          :key = "users.id"
+          @follow="followAction"
+      ></user-item>
+    </div>
   </div>
 </template>
 
@@ -38,15 +50,39 @@ export default {
       const userToAction = this.users.filter(u => u.id === id);
       userToAction[0].followed = !userToAction[0].followed;
     }
+  },
+  computed: {
+    followedOnly() {
+      return this.users.filter(u => u.followed === true);
+    },
+    unfollowedOnly() {
+      return this.users.filter(u => u.followed === false);
+    }
   }
 }
 </script>
 
 <style scoped>
 .content {
-  width: 75%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+.users-list {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.list-text {
+  margin-bottom: 20px;
+}
+@media (max-width: 1100px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .unfollowed-list {
+    margin-top: 50px;
+  }
 }
 </style>
