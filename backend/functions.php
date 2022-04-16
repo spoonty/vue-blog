@@ -42,3 +42,16 @@ function getIdOfUserByToken($connect, $token) {
     $userId = $connect->query("SELECT userId FROM tokens WHERE value = '$token'")->fetch_assoc();
     return $userId['userId'];
 }
+
+function checkForAdmin($connect, $token) {
+    $userId = getIdOfUserByToken($connect, $token);
+
+    if ($userId) {
+        $checkForAdmin = $connect->query("SELECT roleId FROM users WHERE userId = $userId")->fetch_assoc();   
+        if ($checkForAdmin['roleId']) {
+            return true;
+        }
+    }
+
+    return false;
+}
