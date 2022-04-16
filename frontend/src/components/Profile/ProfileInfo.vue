@@ -7,9 +7,9 @@
       />
     </div>
     <div class="description-container">
-      <div class="profile-name profile-text">Sergey Kachalov</div>
-      <div class="profile-username profile-text">spoonty</div>
-      <div class="profile-status profile-text">TSU student</div>
+      <div class="profile-name">Sergey Kachalov</div>
+      <div class="profile-username">spoonty</div>
+      <div class="profile-status">TSU student</div>
     </div>
   </div>
 </template>
@@ -48,9 +48,6 @@ export default {
 }
 .profile-status {
   margin-top: 10px;
-}
-.profile-text {
-  font-family: Tahoma;
 }
 @media (max-width: 1200px) {
   .profile-info {

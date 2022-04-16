@@ -1,9 +1,9 @@
 <template>
   <div class="post-item">
-    <div class="post post-text">{{post.text}}</div>
+    <div class="post-text">{{post.text}}</div>
     <div class="post-data">
-      <span class="post-date post-text">{{post.date}}</span>
-      <span class="post-likes post-text">Likes: {{post.likes}}</span>
+      <span class="post-date">{{post.date}}</span>
+      <span class="post-likes">Likes: {{post.likes}}</span>
     </div>
   </div>
 </template>
@@ -28,9 +28,6 @@ export default {
   background-color: #f1f1f1;
   border-radius: 20px;
 }
-.post {
-
-}
 .post-data {
   margin-top: 7px;
   display: grid;
@@ -42,8 +39,5 @@ export default {
 }
 .post-date {
   color: #737373;
-}
-.post-text {
-  font-family: Tahoma;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <a @click="$router.push('/')" class="navbar-title navbar-text" href="#">Navbar</a>
+    <a @click="$router.push('/')" class="navbar-title navbar-text" href="#">VueBlog</a>
     <div class="links">
       <a @click="$router.push('/users')" class="navbar-text" href="#">Users</a>
       <span style="margin: 0 10px; color: #f3f3f3;"> | </span>

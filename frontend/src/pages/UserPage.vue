@@ -1,9 +1,7 @@
 <template>
-  <div class="content-wrapper">
-    <div class="content">
-      <profile-info />
-      <profile-posts />
-    </div>
+  <div class="content">
+    <profile-info />
+    <profile-posts />
   </div>
 </template>
 
@@ -17,12 +15,6 @@ export default {
 </script>
 
 <style>
-.content-wrapper {
-  height: calc(100% - 50px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 .content {
   height: 85%;
   width: 75%;

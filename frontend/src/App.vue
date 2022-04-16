@@ -1,7 +1,9 @@
 <template>
   <div style="height: 100%">
     <navbar-panel />
-    <router-view></router-view>
+    <div class="content-wrapper">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -18,9 +20,16 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Tahoma;
 }
 body, html, body #app {
   width: 100%;
   height: 100%;
+}
+.content-wrapper {
+  height: calc(100% - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
