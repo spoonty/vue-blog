@@ -1,8 +1,8 @@
 <template>
   <div class="navbar">
-    <a class="navbar-title navbar-text" href="#">Navbar</a>
+    <a @click="$router.push('/')" class="navbar-title navbar-text" href="#">Navbar</a>
     <div class="links">
-      <a class="navbar-text" href="#">Users</a>
+      <a @click="$router.push('/users')" class="navbar-text" href="#">Users</a>
       <span style="margin: 0 10px; color: #f3f3f3;"> | </span>
       <a class="navbar-text" href="#">Logout</a>
     </div>

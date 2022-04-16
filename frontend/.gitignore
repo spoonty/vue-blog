@@ -1,3 +1,6 @@
+.idea
+.vscode
+
 # Logs
 logs
 *.log
@@ -20,7 +23,6 @@ coverage
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
 *.suo
 *.ntvs*
 *.njsproj
