@@ -39,7 +39,7 @@ function getUsers($connect, $yourId) {
     $users = $connect->query("SELECT * FROM users");
     $usersList = [];
 
-    $following = $connect->query("SELECT followedId FROM `following` where userId = $yourId");
+    $following = $connect->query("SELECT followedId FROM `following` WHERE userId = $yourId");
     
     $followingList = [];
 
@@ -64,7 +64,7 @@ function getUsers($connect, $yourId) {
 function getUser($connect, $userId) {
     $user = $connect->query("SELECT * FROM users WHERE id = '$userId'")->fetch_assoc();
 
-    $followers = $connect->query("SELECT userId FROM `following` where followedId = $userId");
+    $followers = $connect->query("SELECT userId FROM `following` WHERE followedId = $userId");
     
     $followersList = [];
 
