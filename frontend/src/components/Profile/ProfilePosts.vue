@@ -45,26 +45,7 @@ export default {
 
   methods: {
     addPost() {
-      const date = new Date();
-
-      const post = {
-        id: this.posts[0] !== undefined
-            ? this.posts[0].id + 1
-            : 1,
-        text: this.inputText,
-        date: `${
-          date.getDate() >= 10
-              ? date.getDate()
-              : `0${date.getDate()}`
-        }-${
-          date.getMonth() + 1 >= 10
-              ? date.getMonth() + 1
-              : `0${date.getMonth() + 1}`
-        }-${date.getFullYear()}`,
-        likes: 0
-      }
-
-      this.posts.unshift(post);
+      this.$emit('addPost', this.inputText);
       this.inputText='';
     }
   }

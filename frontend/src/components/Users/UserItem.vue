@@ -2,10 +2,10 @@
   <div class="user-item">
     <img
         class="avatar"
-        :src="user.avatar"
+        src="https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg"
     />
     <a
-        @click="$router.push(`/users/${user.id}`)"
+        @click="$router.push(`/users/${user.userId}`)"
         class="username"
         href="#"
     >

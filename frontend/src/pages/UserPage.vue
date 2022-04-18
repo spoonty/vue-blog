@@ -5,7 +5,8 @@
       :profile="{...profile[0]}"
     />
     <profile-posts
-      :posts="posts"
+      :posts="newPostsFirst"
+      @addPost="addPost"
     />
   </div>
 </template>
@@ -13,7 +14,7 @@
 <script>
 import ProfileInfo from '@/components/Profile/ProfileInfo.vue';
 import ProfilePosts from '@/components/Profile/ProfilePosts.vue';
-import {usersGetUser, postsGetPost} from '@/API/api';
+import {usersGetUser, postsGetPost, postsAddPost} from '@/API/api';
 
 export default {
   data() {
@@ -50,6 +51,38 @@ export default {
       .catch(error => {
         console.log(error);
       })
+  },
+
+  computed: {
+    newPostsFirst() {
+      return this.posts.reverse();
+    }
+  },
+
+  methods: {
+    async addPost(text) {
+      const data = {
+        text
+      };
+
+      await postsAddPost(data, localStorage.getItem('your_id'))
+        .then(async response => {
+          if (response.status === 200) {
+            await postsGetPost(localStorage.getItem('your_id'))
+                .then(response => {
+                  if (response.status === 200) {
+                    this.posts = response.data;
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
   }
 }
 </script>

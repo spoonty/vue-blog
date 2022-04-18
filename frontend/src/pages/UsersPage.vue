@@ -23,28 +23,33 @@
 
 <script>
 import UserItem from '@/components/Users/UserItem.vue';
+import {usersGetUsers} from '@/API/api';
 
 export default {
   data() {
     return {
-      users: [
-        {id: 1, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: true},
-        {id: 2, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 3, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 4, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: true},
-        {id: 5, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: true},
-        {id: 6, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 7, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 8, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 9, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 10, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 11, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 12, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-        {id: 13, username: 'spoonty', avatar: 'https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg', followed: false},
-      ]
+      users: []
     }
   },
   components: {UserItem},
+
+  async mounted() {
+    if (!localStorage.getItem('your_id')) {
+      this.$router.push('/login');
+      return;
+    }
+
+    await usersGetUsers()
+      .then(response => {
+        if (response.status === 200) {
+          this.users = response.data;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  },
+
   methods: {
     followAction(id) {
       const userToAction = this.users.filter(u => u.id === id);
@@ -53,10 +58,12 @@ export default {
   },
   computed: {
     followedOnly() {
-      return this.users.filter(u => u.followed === true);
+      const yourId = localStorage.getItem('your_id');
+      return this.users.filter(u => u.followed === true && u.userId != yourId);
     },
     unfollowedOnly() {
-      return this.users.filter(u => u.followed === false);
+      const yourId = localStorage.getItem('your_id');
+      return this.users.filter(u => u.followed === false && u.userId != yourId);
     }
   }
 }
