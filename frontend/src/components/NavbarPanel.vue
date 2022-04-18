@@ -30,7 +30,6 @@ export default {
   margin-left: 20px;
 }
 .navbar-text {
-  font-family: Tahoma;
   text-decoration: none;
   color: white;
 }
