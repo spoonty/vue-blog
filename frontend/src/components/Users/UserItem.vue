@@ -71,10 +71,10 @@ export default {
   justify-self: flex-start;
 }
 .username:hover {
-  color: #606060;
+  color: #363636;
 }
 .username:active {
-  color: #b7b7b7;
+  color: #505050;
 }
 .followed {
   align-self: center;

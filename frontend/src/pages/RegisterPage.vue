@@ -65,4 +65,9 @@ h1 {
   padding: 0 15px;
   margin: 15px 0;
 }
+@media (max-width: 900px) {
+  .register-form {
+    width: 80%;
+  }
+}
 </style>

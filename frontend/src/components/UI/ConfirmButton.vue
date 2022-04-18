@@ -23,9 +23,9 @@ export default {
   cursor: pointer;
 }
 .confirm-btn:hover {
-  background-color: #009a9a;
+  background-color: #00b6b6;
 }
 .confirm-btn:active {
-  background-color: #007070;
+  background-color: #00afaf;
 }
 </style>

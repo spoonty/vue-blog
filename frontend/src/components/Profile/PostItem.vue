@@ -80,9 +80,21 @@ export default {
 .deletePost-btn {
   background-color: #c0c0c0;
 }
+.deletePost-btn:hover {
+  background-color: #b9b9b9;
+}
+.deletePost-btn:active {
+  background-color: #afafaf;
+}
 .likePost-btn {
   background-color: #ee5353;
   color: white;
+}
+.likePost-btn:hover {
+  background-color: #e55151;
+}
+.likePost-btn:active {
+  background-color: #d94d4d;
 }
 .post-data {
   margin-top: 7px;
