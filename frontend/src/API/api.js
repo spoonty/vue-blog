@@ -37,3 +37,11 @@ export const postsGetPost = async (id) => {
 export const postsAddPost = async (data, id) => {
     return await axios.post(URL + 'posts/' + id, data, getHeaders());
 }
+
+export const postsDeletePost = async (id) => {
+    return await axios.delete(URL + 'posts/' + id, getHeaders());
+}
+
+export const postsLikePost = async (id) => {
+    return await axios.post(URL + 'posts/' + id + '/like', '', getHeaders());
+}

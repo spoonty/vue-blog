@@ -7,6 +7,8 @@
     <profile-posts
       :posts="newPostsFirst"
       @addPost="addPost"
+      @deletePost="deletePost"
+      @likePost="likePost"
     />
   </div>
 </template>
@@ -14,7 +16,11 @@
 <script>
 import ProfileInfo from '@/components/Profile/ProfileInfo.vue';
 import ProfilePosts from '@/components/Profile/ProfilePosts.vue';
-import {usersGetUser, postsGetPost, postsAddPost} from '@/API/api';
+import {usersGetUser,
+        postsGetPost,
+        postsAddPost,
+        postsDeletePost,
+        postsLikePost} from '@/API/api';
 
 export default {
   data() {
@@ -90,6 +96,46 @@ export default {
         .catch(error => {
           console.log(error);
         })
+    },
+
+    async deletePost(id) {
+      await postsDeletePost(id)
+        .then(async response => {
+          if (response.status === 200) {
+            await postsGetPost(localStorage.getItem('your_id'))
+                .then(response => {
+                  if (response.status === 200) {
+                    this.posts = response.data;
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+          }
+        })
+          .catch(error => {
+            console.log(error);
+          })
+    },
+
+    async likePost(id) {
+      await postsLikePost(id)
+          .then(async response => {
+            if (response.status === 200) {
+              await postsGetPost(this.$route.path.substr(7))
+                  .then(response => {
+                    if (response.status === 200) {
+                      this.posts = response.data;
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  })
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
     }
   }
 }

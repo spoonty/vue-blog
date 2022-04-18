@@ -18,7 +18,6 @@ function route($method, $urlData, $formData) {
                 break;
             case 'DELETE':
                 if (sizeof($urlData) == 1) deletePost($connect, $urlData[0], $yourId);
-                else if (sizeof($urlData) == 2 && $urlData[1] == 'like') unlikePost($connect, $urlData[0], $yourId);
                 else setStatus('404', 'Route does not exist');
                 break;
             default:
@@ -98,33 +97,8 @@ function likePost($connect, $postId, $userId) {
                 setStatus('200', 'OK. Post liked');
             }
             else {
-                setStatus('400', 'Post already liked');
-            }
-        }
-        else {
-            setStatus('404', 'Post with id = '.$post.' does not exist');
-        }
-    }
-    else {
-        setStatus('404', 'User with id = '.$userId.' does not exist');
-    }
-}
-
-function unlikePost($connect, $postId, $userId) {
-    $user = $connect->query("SELECT id FROM users WHERE id = $userId")->fetch_assoc();
-
-    if (!is_null($user)) {
-        $post = $connect->query("SELECT id FROM posts WHERE id = $postId")->fetch_assoc();
-
-        if (!is_null($post)) {
-            $like = $connect->query("SELECT userId FROM likedposts WHERE userId = $userId AND postId = $postId")->fetch_assoc();
-
-            if (!is_null($like)) {
                 $connect->query("DELETE FROM likedposts WHERE userId = $userId AND postId = $postId");
                 setStatus('200', "OK. Post unliked");
-            }
-            else {
-                setStatus('400', 'Post already unliked');
             }
         }
         else {

@@ -1,7 +1,7 @@
 <template>
   <div class="item-container">
     <div v-if="isYourPage" class="delete-btn-container">
-      <button class="deletePost-btn">
+      <button @click="deletePost" class="deletePost-btn">
         <fa icon="xmark" />
       </button>
     </div>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div v-if="!isYourPage" class="like-btn-container">
-      <button class="likePost-btn">
+      <button @click="likePost" class="likePost-btn">
         <fa icon="heart" />
       </button>
     </div>
@@ -31,6 +31,14 @@ export default {
   computed: {
     isYourPage() {
       return !this.$route.path.includes('/users/');
+    }
+  },
+  methods: {
+    deletePost() {
+      this.$emit('deletePost', this.post.postId);
+    },
+    likePost() {
+      this.$emit('likePost', this.post.postId);
     }
   }
 }

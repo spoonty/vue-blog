@@ -19,6 +19,8 @@
           v-for="post in this.posts"
           :post="post"
           :key="post.id"
+          @deletePost="deletePost"
+          @likePost="likePost"
       />
     </div>
   </div>
@@ -47,6 +49,12 @@ export default {
     addPost() {
       this.$emit('addPost', this.inputText);
       this.inputText='';
+    },
+    deletePost(id) {
+      this.$emit('deletePost', id);
+    },
+    likePost(id) {
+      this.$emit('likePost', id);
     }
   },
 
