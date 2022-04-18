@@ -21,13 +21,13 @@ export default {
   },
   components: { MyInput, ConfirmButton },
   methods: {
-    confirmForm() {
+    async confirmForm() {
       const data = {
         username: this.username,
         password: this.password
       }
 
-      authLogin(data)
+      await authLogin(data)
       .then(response => {
         if (response.status === 200) {
           localStorage.setItem('my_token', response.data.token);

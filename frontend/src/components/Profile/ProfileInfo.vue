@@ -10,7 +10,13 @@
       <div class="profile-name">{{ profile.name }}</div>
       <div class="profile-username">{{ profile.username }}</div>
       <div v-if="profile.status" class="profile-status">{{ profile.status }}</div>
-      <div v-else-if="profile.status === null" class="profile-status">Input your status</div>
+      <div v-else-if="profile.status === null || !profile.status?.length" class="profile-status"><i>Empty status</i></div>
+      <button @click="$router.push('/edit')" v-if="isYourPage" class="profile-edit">
+        Edit profile
+      </button>
+      <div class="profile-followers">
+        <fa icon="user" /> <b>{{ profile.followers }}</b> follower
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +27,11 @@ export default {
     profile: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    isYourPage() {
+      return !this.$route.path.includes('/users/');
     }
   }
 }
@@ -55,6 +66,24 @@ export default {
 .profile-status {
   margin-top: 10px;
   cursor: pointer;
+}
+.profile-edit {
+  width: 65%;
+  height: 30px;
+  margin-top: 15px;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  border: 1px solid #adadad;
+  cursor: pointer;
+}
+.profile-edit:hover {
+  background-color: #ececec;
+}
+.profile-edit:active {
+  background-color: #e3e3e3;
+}
+.profile-followers {
+  margin-top: 15px;
 }
 @media (max-width: 1200px) {
   .profile-info {

@@ -3,6 +3,7 @@ import UserPage from "@/pages/UserPage.vue";
 import UsersPage from "@/pages/UsersPage.vue"
 import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
+import EditPage from "@/pages/EditPage.vue";
 
 const routes = [
     {
@@ -24,6 +25,10 @@ const routes = [
     {
         path: '/users/:id',
         component: UserPage
+    },
+    {
+        path: '/edit',
+        component: EditPage
     }
 ]
 
