@@ -4,14 +4,28 @@
     <div class="links">
       <a @click="$router.push('/users')" class="navbar-text" href="#">Users</a>
       <span style="margin: 0 10px; color: #f3f3f3;"> | </span>
-      <a class="navbar-text" href="#">Logout</a>
+      <a @click="logout" class="navbar-text" href="#">Logout</a>
     </div>
   </div>
 </template>
 
 <script>
-export default {
+import {authLogout} from "@/API/api";
 
+export default {
+  methods: {
+    async logout() {
+      await authLogout()
+        .then(response => {
+          if (response.status === 200) {
+            localStorage.removeItem('my_token');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+  }
 }
 </script>
 

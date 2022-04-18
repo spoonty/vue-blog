@@ -25,8 +25,25 @@ export default {
   },
   components: { MyInput, ConfirmButton },
   methods: {
-    confirmForm() {
-      
+    async confirmForm() {
+      if (this.password === this.passwordR) {
+        const data = {
+          name: this.name,
+          username: this.name,
+          password: this.password
+        };
+
+        await authRegister(data)
+            .then(response => {
+              if (response.status === 200) {
+                const token = response.data.token;
+                localStorage.setItem('my_token', token);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            })
+      }
     }
   }
 }
