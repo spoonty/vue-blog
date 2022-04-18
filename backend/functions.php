@@ -34,6 +34,7 @@ function genToken() {
 
 function getToken() {
     $token = getallheaders()['Authorization'];
+    $token = substr($token, 7);
     return $token;
 }
 

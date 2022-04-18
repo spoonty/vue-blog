@@ -10,6 +10,7 @@
 <script>
 import MyInput from "@/components/UI/MyInput.vue";
 import ConfirmButton from "@/components/UI/ConfirmButton.vue";
+import {authLogin} from "@/API/api";
 
 export default {
   data() {
@@ -21,7 +22,21 @@ export default {
   components: { MyInput, ConfirmButton },
   methods: {
     confirmForm() {
-      console.log(1);
+      const data = {
+        username: this.username,
+        password: this.password
+      }
+
+      authLogin(data)
+        .then(response => {
+          if (response.status === 200) {
+            const token = response.data.token;
+            localStorage.setItem('my_token', token);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
   }
 }

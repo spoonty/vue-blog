@@ -92,7 +92,7 @@ function login($connect, $formData) {
 
     $username = $formData->username;
     $password = hash("sha1", $formData->password);
-    
+
     $userId = $connect->query("SELECT id FROM users WHERE username = '$username' AND password = '$password'")->fetch_assoc();
     $userId = $userId['id'];
 
