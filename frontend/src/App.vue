@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <navbar-panel />
     <div class="content-wrapper">
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
   </div>
 </template>

@@ -20,6 +20,10 @@ const routes = [
     {
         path: '/register',
         component: RegisterPage
+    },
+    {
+        path: '/users/:id',
+        component: UserPage
     }
 ]
 

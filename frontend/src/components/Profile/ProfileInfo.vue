@@ -10,7 +10,7 @@
       <div class="profile-name">{{ profile.name }}</div>
       <div class="profile-username">{{ profile.username }}</div>
       <div v-if="profile.status" class="profile-status">{{ profile.status }}</div>
-      <div v-else-if="profile.status === ''" class="profile-status">Input your status</div>
+      <div v-else-if="profile.status === null" class="profile-status">Input your status</div>
     </div>
   </div>
 </template>
@@ -54,6 +54,7 @@ export default {
 }
 .profile-status {
   margin-top: 10px;
+  cursor: pointer;
 }
 @media (max-width: 1200px) {
   .profile-info {

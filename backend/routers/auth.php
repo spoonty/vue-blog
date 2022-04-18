@@ -64,6 +64,7 @@ function register($connect, $formData) {
         $connect->query("INSERT INTO tokens (value, userId) VALUES ('$token', '$userId')");
 
         echo json_encode([
+            'id' => $userId,
             'token' => $token
         ]);
     }
@@ -102,6 +103,7 @@ function login($connect, $formData) {
         $connect->query("INSERT INTO tokens (value, userId) VALUES ('$token', '$userId')");
     
         echo json_encode([
+            'id' => $userId,
             'token' => $token
         ]);
     }

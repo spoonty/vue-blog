@@ -32,25 +32,7 @@ export default {
       return;
     }
 
-    await usersGetUser(localStorage.getItem('your_id'))
-      .then(response => {
-        if (response.status === 200) {
-          this.profile = response.data;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
-
-    await postsGetPost(localStorage.getItem('your_id'))
-      .then(response => {
-        if (response.status === 200) {
-          this.posts = response.data;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    await this.fetchData();
   },
 
   computed: {
@@ -60,6 +42,32 @@ export default {
   },
 
   methods: {
+    async fetchData() {
+      let userId = localStorage.getItem('your_id');
+      if (this.$route.path.includes('users')) {
+        userId = this.$route.path.substr(7);
+      }
+
+      await usersGetUser(userId)
+          .then(response => {
+            if (response.status === 200) {
+              this.profile = response.data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+
+      await postsGetPost(userId)
+          .then(response => {
+            if (response.status === 200) {
+              this.posts = response.data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+    },
     async addPost(text) {
       const data = {
         text
