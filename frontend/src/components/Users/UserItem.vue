@@ -13,14 +13,14 @@
     </a>
     <div class="followed">
       <button
-          @click="followAction"
+          @click="followUser"
           class="btn follow"
           v-if="user.followed"
       >
         <fa icon="minus" />
       </button>
       <button
-          @click="followAction"
+          @click="followUser"
           class="btn unfollow"
           v-else
       >
@@ -39,8 +39,8 @@ export default {
     }
   },
   methods: {
-    followAction() {
-      this.$emit('follow', this.user.id);
+    followUser() {
+      this.$emit('follow', this.user.userId);
     }
   }
 }

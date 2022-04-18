@@ -18,6 +18,7 @@ function route($method, $urlData, $formData) {
                 break;
             case 'POST':
                 if (sizeof($urlData) == 2 && $urlData[1] == 'avatar' && $yourId == $urlData[0]) loadAvatar($connect, $urlData[0], $_FILES['avatar']);
+                else if (sizeof($urlData) == 2 && $urlData[1] == 'follow') followUser($connect, $yourId, $urlData[0]);
                 else setStatus('403', 'You do not have enough rights to update this user');
                 break;
             case 'DELETE':
@@ -162,6 +163,33 @@ function deleteUser($connect, $userId) {
     if (!is_null($user)) {
         $connect->query("DELETE FROM users WHERE id = $userId");
         setStatus("200", "OK. User deleted");
+    }
+    else {
+        setStatus('404', 'User with id = '.$userId.' does not exist');
+    }
+}
+
+function followUser($connect, $userId, $followedId) {
+    $user = $connect->query("SELECT id FROM users WHERE id = $userId")->fetch_assoc();
+
+    if (!is_null($user)) {
+        $user = $connect->query("SELECT id FROM users WHERE id = $followedId")->fetch_assoc();
+
+        if (!is_null($user)) {
+            $follow = $connect->query("SELECT * FROM following WHERE followedId = $followedId AND userId = $userId")->fetch_assoc();
+
+            if (is_null($follow)) {
+                $connect->query("INSERT INTO following (userId, followedId) VALUES ('$userId', '$followedId')");
+                setStatus("200", "OK. You followed for user " . $followedId);
+            }
+            else {
+                $connect->query("DELETE FROM following WHERE userId = '$userId' AND followedId = '$followedId'");
+                setStatus("200", "OK. You unfollowed from user " . $followedId);
+            }
+        }
+        else {
+            setStatus('404', 'User with id = '.$followId.' does not exist');
+        }
     }
     else {
         setStatus('404', 'User with id = '.$userId.' does not exist');

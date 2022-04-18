@@ -6,7 +6,7 @@
           v-for="user in followedOnly"
           :user="user"
           :key = "users.id"
-          @follow="followAction"
+          @follow="followUser"
       ></user-item>
     </div>
     <div class="users-list unfollowed-list">
@@ -15,7 +15,7 @@
           v-for="user in unfollowedOnly"
           :user="user"
           :key = "users.id"
-          @follow="followAction"
+          @follow="followUser"
       ></user-item>
     </div>
   </div>
@@ -23,7 +23,7 @@
 
 <script>
 import UserItem from '@/components/Users/UserItem.vue';
-import {usersGetUsers} from '@/API/api';
+import {usersGetUsers, usersFollowUser} from '@/API/api';
 
 export default {
   data() {
@@ -51,9 +51,24 @@ export default {
   },
 
   methods: {
-    followAction(id) {
-      const userToAction = this.users.filter(u => u.id === id);
-      userToAction[0].followed = !userToAction[0].followed;
+    async followUser(id) {
+      await usersFollowUser(id)
+        .then(async response => {
+          if (response.status === 200) {
+            await usersGetUsers()
+                .then(response => {
+                  if (response.status === 200) {
+                    this.users = response.data;
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                })
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
   },
   computed: {

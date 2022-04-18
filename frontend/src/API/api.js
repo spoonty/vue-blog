@@ -30,6 +30,10 @@ export const usersGetUser = async (id) => {
     return await axios.get(URL + 'users/' + id, getHeaders());
 }
 
+export const usersFollowUser = async (id) => {
+    return await axios.post(URL + 'users/' + id + '/follow', '', getHeaders());
+}
+
 export const postsGetPost = async (id) => {
     return await axios.get(URL + 'posts/' + id, getHeaders());
 }
