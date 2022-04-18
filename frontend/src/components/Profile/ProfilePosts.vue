@@ -1,6 +1,6 @@
 <template>
   <div class="profile-posts">
-    <div class="input-post-container">
+    <div v-if="isYourPage" class="input-post-container">
       <div>
         <textarea
             v-model="inputText"
@@ -47,6 +47,12 @@ export default {
     addPost() {
       this.$emit('addPost', this.inputText);
       this.inputText='';
+    }
+  },
+
+  computed: {
+    isYourPage() {
+      return !this.$route.path.includes('/users/');
     }
   }
 }
