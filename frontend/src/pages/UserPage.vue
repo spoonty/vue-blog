@@ -1,16 +1,56 @@
 <template>
   <div class="content">
-    <profile-info />
-    <profile-posts />
+    <profile-info
+      :key="profile.id"
+      :profile="{...profile[0]}"
+    />
+    <profile-posts
+      :posts="posts"
+    />
   </div>
 </template>
 
 <script>
 import ProfileInfo from '@/components/Profile/ProfileInfo.vue';
 import ProfilePosts from '@/components/Profile/ProfilePosts.vue';
+import {usersGetUser, postsGetPost} from '@/API/api';
 
 export default {
-  components: { ProfileInfo, ProfilePosts}
+  data() {
+    return {
+      profile: {},
+      posts: []
+    }
+  },
+
+  components: { ProfileInfo, ProfilePosts},
+
+  async mounted() {
+    if (!localStorage.getItem('your_id')) {
+      this.$router.push('/login');
+      return;
+    }
+
+    await usersGetUser(localStorage.getItem('your_id'))
+      .then(response => {
+        if (response.status === 200) {
+          this.profile = response.data;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+    await postsGetPost(localStorage.getItem('your_id'))
+      .then(response => {
+        if (response.status === 200) {
+          this.posts = response.data;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
 }
 </script>
 

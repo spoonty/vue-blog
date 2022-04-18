@@ -30,10 +30,14 @@ import PostItem from '@/components/Profile/PostItem.vue';
 export default {
   data() {
     return {
-      posts: [
-        {id: 1, text: "Hello. I fucked up my imagination...", date: "12-04-2022", likes: 0},
-    ],
       inputText: ''
+    }
+  },
+
+  props: {
+    posts: {
+      type: Array,
+      required: true
     }
   },
 

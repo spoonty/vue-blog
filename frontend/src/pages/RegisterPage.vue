@@ -36,8 +36,8 @@ export default {
         await authRegister(data)
             .then(response => {
               if (response.status === 200) {
-                const token = response.data.token;
-                localStorage.setItem('my_token', token);
+                localStorage.setItem('my_token', response.data.token);
+                localStorage.setItem('your_id', response.data.id);
               }
             })
             .catch(error => {

@@ -28,15 +28,16 @@ export default {
       }
 
       authLogin(data)
-        .then(response => {
-          if (response.status === 200) {
-            const token = response.data.token;
-            localStorage.setItem('my_token', token);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+      .then(response => {
+        if (response.status === 200) {
+          localStorage.setItem('my_token', response.data.token);
+          localStorage.setItem('your_id', response.data.id);
+          this.$router.push('/');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
     }
   }
 }

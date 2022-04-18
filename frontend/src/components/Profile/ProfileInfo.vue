@@ -7,16 +7,22 @@
       />
     </div>
     <div class="description-container">
-      <div class="profile-name">Sergey Kachalov</div>
-      <div class="profile-username">spoonty</div>
-      <div class="profile-status">TSU student</div>
+      <div class="profile-name">{{ profile.name }}</div>
+      <div class="profile-username">{{ profile.username }}</div>
+      <div v-if="profile.status" class="profile-status">{{ profile.status }}</div>
+      <div v-else-if="profile.status === ''" class="profile-status">Input your status</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  props: {
+    profile: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 

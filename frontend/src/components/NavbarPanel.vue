@@ -18,7 +18,8 @@ export default {
       await authLogout()
         .then(response => {
           if (response.status === 200) {
-            localStorage.removeItem('my_token');
+            this.$router.push('/login');
+            localStorage.clear();
           }
         })
         .catch(error => {
