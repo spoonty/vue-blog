@@ -32,7 +32,6 @@
 
 <script>
 import PostItem from '@/components/Profile/PostItem.vue';
-import {postsGetPost, postsLikePost, postsAddPost, postsDeletePost} from '@/API/api';
 import {mapActions, mapGetters, mapMutations} from 'vuex';
 
 export default {
@@ -60,16 +59,7 @@ export default {
       userId = this.$route.path.substr(7);
     }
 
-    await this.fetchPosts(userId);
-    // await postsGetPost(userId)
-    //     .then(response => {
-    //       if (response.status === 200) {
-    //         this.posts = response.data;
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     })
+    await this.fetchGetPosts(userId);
   },
 
   unmounted() {
@@ -77,73 +67,38 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchPosts']),
-    ...mapMutations(['resetState'])
-    // async addPost() {
-    //   const data = {
-    //     text: this.inputText
-    //   };
-    //
-    //   await postsAddPost(data, localStorage.getItem('your_id'))
-    //       .then(async response => {
-    //         if (response.status === 200) {
-    //           await postsGetPost(localStorage.getItem('your_id'))
-    //               .then(response => {
-    //                 if (response.status === 200) {
-    //                   this.posts = response.data;
-    //                 }
-    //               })
-    //               .catch(error => {
-    //                 console.log(error);
-    //               })
-    //         }
-    //       })
-    //       .catch(error => {
-    //         console.log(error);
-    //       })
-    //
-    //   this.inputText = '';
-    // },
-    //
-    // async deletePost(id) {
-    //   await postsDeletePost(id)
-    //       .then(async response => {
-    //         if (response.status === 200) {
-    //           await postsGetPost(localStorage.getItem('your_id'))
-    //               .then(response => {
-    //                 if (response.status === 200) {
-    //                   this.posts = response.data;
-    //                 }
-    //               })
-    //               .catch(error => {
-    //                 console.log(error);
-    //               })
-    //         }
-    //       })
-    //       .catch(error => {
-    //         console.log(error);
-    //       })
-    // },
-    //
-    // async likePost(id) {
-    //   await postsLikePost(id)
-    //       .then(async response => {
-    //         if (response.status === 200) {
-    //           await postsGetPost(this.$route.path.substr(7))
-    //               .then(response => {
-    //                 if (response.status === 200) {
-    //                   this.posts = response.data;
-    //                 }
-    //               })
-    //               .catch(error => {
-    //                 console.log(error);
-    //               })
-    //         }
-    //       })
-    //       .catch(error => {
-    //         console.log(error);
-    //       })
-    // }
+    ...mapActions(['fetchGetPosts',
+      'fetchAddPost',
+      'fetchDeletePost',
+      'fetchLikePost']),
+    ...mapMutations(['resetState']),
+
+    async addPost() {
+      const data = {
+        text: this.inputText
+      }
+
+      await this.fetchAddPost({
+        data,
+        userId: localStorage.getItem('your_id')
+      });
+
+      this.inputText = '';
+    },
+
+    async deletePost(id) {
+      await this.fetchDeletePost({
+        postId: id,
+        userId: localStorage.getItem('your_id')
+      });
+    },
+
+    async likePost(id) {
+      await this.fetchLikePost({
+        postId: id,
+        userId: this.$route.path.substr(7)
+      })
+    }
   }
 }
 </script>
