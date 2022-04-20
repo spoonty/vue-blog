@@ -20,7 +20,7 @@
     </div>
     <div class="posts-container">
       <post-item
-          v-for="post in newPostsFirst"
+          v-for="post in getPosts"
           :post="post"
           :key="post.id"
           @deletePost="deletePost"
@@ -33,6 +33,7 @@
 <script>
 import PostItem from '@/components/Profile/PostItem.vue';
 import {postsGetPost, postsLikePost, postsAddPost, postsDeletePost} from '@/API/api';
+import {mapActions, mapGetters, mapMutations} from 'vuex';
 
 export default {
   data() {
@@ -42,14 +43,16 @@ export default {
     }
   },
 
-  props: {
-    posts: {
-      type: Array,
-      required: true
-    }
-  },
 
   components: {PostItem},
+
+  computed: {
+    ...mapGetters(['getPosts']),
+
+    isYourPage() {
+      return !this.$route.path.includes('/users/');
+    }
+  },
 
   async mounted() {
     let userId = localStorage.getItem('your_id');
@@ -57,92 +60,90 @@ export default {
       userId = this.$route.path.substr(7);
     }
 
-    await postsGetPost(userId)
-        .then(response => {
-          if (response.status === 200) {
-            this.posts = response.data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+    await this.fetchPosts(userId);
+    // await postsGetPost(userId)
+    //     .then(response => {
+    //       if (response.status === 200) {
+    //         this.posts = response.data;
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     })
+  },
+
+  unmounted() {
+    this.resetState();
   },
 
   methods: {
-    async addPost() {
-      const data = {
-        text: this.inputText
-      };
-
-      await postsAddPost(data, localStorage.getItem('your_id'))
-          .then(async response => {
-            if (response.status === 200) {
-              await postsGetPost(localStorage.getItem('your_id'))
-                  .then(response => {
-                    if (response.status === 200) {
-                      this.posts = response.data;
-                    }
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  })
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          })
-
-      this.inputText = '';
-    },
-
-    async deletePost(id) {
-      await postsDeletePost(id)
-          .then(async response => {
-            if (response.status === 200) {
-              await postsGetPost(localStorage.getItem('your_id'))
-                  .then(response => {
-                    if (response.status === 200) {
-                      this.posts = response.data;
-                    }
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  })
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          })
-    },
-
-    async likePost(id) {
-      await postsLikePost(id)
-          .then(async response => {
-            if (response.status === 200) {
-              await postsGetPost(this.$route.path.substr(7))
-                  .then(response => {
-                    if (response.status === 200) {
-                      this.posts = response.data;
-                    }
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  })
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          })
-    }
-  },
-
-  computed: {
-    isYourPage() {
-      return !this.$route.path.includes('/users/');
-    },
-    newPostsFirst() {
-      return this.posts.reverse();
-    }
+    ...mapActions(['fetchPosts']),
+    ...mapMutations(['resetState'])
+    // async addPost() {
+    //   const data = {
+    //     text: this.inputText
+    //   };
+    //
+    //   await postsAddPost(data, localStorage.getItem('your_id'))
+    //       .then(async response => {
+    //         if (response.status === 200) {
+    //           await postsGetPost(localStorage.getItem('your_id'))
+    //               .then(response => {
+    //                 if (response.status === 200) {
+    //                   this.posts = response.data;
+    //                 }
+    //               })
+    //               .catch(error => {
+    //                 console.log(error);
+    //               })
+    //         }
+    //       })
+    //       .catch(error => {
+    //         console.log(error);
+    //       })
+    //
+    //   this.inputText = '';
+    // },
+    //
+    // async deletePost(id) {
+    //   await postsDeletePost(id)
+    //       .then(async response => {
+    //         if (response.status === 200) {
+    //           await postsGetPost(localStorage.getItem('your_id'))
+    //               .then(response => {
+    //                 if (response.status === 200) {
+    //                   this.posts = response.data;
+    //                 }
+    //               })
+    //               .catch(error => {
+    //                 console.log(error);
+    //               })
+    //         }
+    //       })
+    //       .catch(error => {
+    //         console.log(error);
+    //       })
+    // },
+    //
+    // async likePost(id) {
+    //   await postsLikePost(id)
+    //       .then(async response => {
+    //         if (response.status === 200) {
+    //           await postsGetPost(this.$route.path.substr(7))
+    //               .then(response => {
+    //                 if (response.status === 200) {
+    //                   this.posts = response.data;
+    //                 }
+    //               })
+    //               .catch(error => {
+    //                 console.log(error);
+    //               })
+    //         }
+    //       })
+    //       .catch(error => {
+    //         console.log(error);
+    //       })
+    // }
   }
 }
 </script>
