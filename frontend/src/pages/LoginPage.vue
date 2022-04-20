@@ -1,8 +1,9 @@
 <template>
   <form class="login-form" @submit.prevent="confirmForm">
     <h1>Login</h1>
-    <my-input class="form-element" v-model="username" placeholder="Username" type="text"></my-input>
-    <my-input class="form-element" v-model="password" placeholder="Password" type="password"></my-input>
+    <my-input class="form-element" :incorrectInput="incorrectData" v-model="username" placeholder="Username" type="text"></my-input>
+    <my-input class="form-element" :incorrectInput="incorrectData" v-model="password" placeholder="Password" type="password"></my-input>
+    <div class="incorrect-data-text" v-if="incorrectData">{{warningText}}</div>
     <confirm-button class="confirm-btn"></confirm-button>
   </form>
 </template>
@@ -16,7 +17,9 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      incorrectData: false,
+      warningText: ''
     }
   },
   components: { MyInput, ConfirmButton },
@@ -32,11 +35,18 @@ export default {
         if (response.status === 200) {
           localStorage.setItem('my_token', response.data.token);
           localStorage.setItem('your_id', response.data.id);
+          this.incorrectData = false;
           this.$router.push('/');
         }
       })
       .catch(error => {
-        console.log(error);
+        this.incorrectData = true;
+        if (error.response.status === 403) {
+          this.warningText = 'Incorrect login or password';
+        }
+        else {
+          this.warningText = 'Something went wrong';
+        }
       })
     }
   }
@@ -58,6 +68,10 @@ h1 {
   height: 40px;
   padding: 0 15px;
   margin: 15px 0;
+}
+.incorrect-data-text {
+  color: red;
+  margin: 0 auto;
 }
 @media (max-width: 900px) {
   .login-form {
