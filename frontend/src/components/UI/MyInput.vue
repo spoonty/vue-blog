@@ -2,6 +2,9 @@
   <input
       :value="modelValue"
       @input="updateInput"
+      :class="{
+        'incorrect-input': incorrectInput
+      }"
       class="input-line"
   />
 </template>
@@ -9,7 +12,8 @@
 <script>
 export default {
   props: {
-    modelValue: String
+    modelValue: String,
+    incorrectInput: Boolean
   },
   methods: {
     updateInput(event) {
@@ -29,5 +33,8 @@ export default {
   border-color: #00c0c0;
   box-shadow: 0 0 8px #007373;
   outline: 0 none;
+}
+.incorrect-input {
+  border: 2px solid red;
 }
 </style>
