@@ -9,6 +9,10 @@
       </div>
       <button
           @click="addPost"
+          :class="{
+              'disabled-btn': !inputText.length
+            }"
+          :disabled="!inputText.length"
           class="add-post-btn"
       >
         <fa icon="paper-plane" />
@@ -16,7 +20,7 @@
     </div>
     <div class="posts-container">
       <post-item
-          v-for="post in this.posts"
+          v-for="post in newPostsFirst"
           :post="post"
           :key="post.id"
           @deletePost="deletePost"
@@ -28,10 +32,12 @@
 
 <script>
 import PostItem from '@/components/Profile/PostItem.vue';
+import {postsGetPost, postsLikePost, postsAddPost, postsDeletePost} from '@/API/api';
 
 export default {
   data() {
     return {
+      posts: [],
       inputText: ''
     }
   },
@@ -45,22 +51,97 @@ export default {
 
   components: {PostItem},
 
+  async mounted() {
+    let userId = localStorage.getItem('your_id');
+    if (this.$route.path.includes('users')) {
+      userId = this.$route.path.substr(7);
+    }
+
+    await postsGetPost(userId)
+        .then(response => {
+          if (response.status === 200) {
+            this.posts = response.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+  },
+
   methods: {
-    addPost() {
-      this.$emit('addPost', this.inputText);
-      this.inputText='';
+    async addPost() {
+      const data = {
+        text: this.inputText
+      };
+
+      await postsAddPost(data, localStorage.getItem('your_id'))
+          .then(async response => {
+            if (response.status === 200) {
+              await postsGetPost(localStorage.getItem('your_id'))
+                  .then(response => {
+                    if (response.status === 200) {
+                      this.posts = response.data;
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  })
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+
+      this.inputText = '';
     },
-    deletePost(id) {
-      this.$emit('deletePost', id);
+
+    async deletePost(id) {
+      await postsDeletePost(id)
+          .then(async response => {
+            if (response.status === 200) {
+              await postsGetPost(localStorage.getItem('your_id'))
+                  .then(response => {
+                    if (response.status === 200) {
+                      this.posts = response.data;
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  })
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
     },
-    likePost(id) {
-      this.$emit('likePost', id);
+
+    async likePost(id) {
+      await postsLikePost(id)
+          .then(async response => {
+            if (response.status === 200) {
+              await postsGetPost(this.$route.path.substr(7))
+                  .then(response => {
+                    if (response.status === 200) {
+                      this.posts = response.data;
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  })
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
     }
   },
 
   computed: {
     isYourPage() {
       return !this.$route.path.includes('/users/');
+    },
+    newPostsFirst() {
+      return this.posts.reverse();
     }
   }
 }
@@ -100,6 +181,13 @@ export default {
 }
 .add-post-btn:active {
   background-color: #00afaf;
+}
+.disabled-btn,
+.disabled-btn:hover,
+.disabled-btn:active  {
+  background-color: gray;
+  opacity: .3;
+  cursor: not-allowed;
 }
 .posts-container {
   display: flex;

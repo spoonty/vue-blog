@@ -4,29 +4,19 @@
       :key="profile.id"
       :profile="{...profile[0]}"
     />
-    <profile-posts
-      :posts="newPostsFirst"
-      @addPost="addPost"
-      @deletePost="deletePost"
-      @likePost="likePost"
-    />
+    <profile-posts/>
   </div>
 </template>
 
 <script>
 import ProfileInfo from '@/components/Profile/ProfileInfo.vue';
 import ProfilePosts from '@/components/Profile/ProfilePosts.vue';
-import {usersGetUser,
-        postsGetPost,
-        postsAddPost,
-        postsDeletePost,
-        postsLikePost} from '@/API/api';
+import {usersGetUser} from '@/API/api';
 
 export default {
   data() {
     return {
-      profile: {},
-      posts: []
+      profile: {}
     }
   },
 
@@ -39,12 +29,6 @@ export default {
     }
 
     await this.fetchData();
-  },
-
-  computed: {
-    newPostsFirst() {
-      return this.posts.reverse();
-    }
   },
 
   methods: {
@@ -64,79 +48,82 @@ export default {
             console.log(error);
           })
 
-      await postsGetPost(userId)
-          .then(response => {
-            if (response.status === 200) {
-              this.posts = response.data;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          })
+      // await postsGetPost(userId)
+      //     .then(response => {
+      //       if (response.status === 200) {
+      //         this.posts = response.data;
+      //       }
+      //     })
+      //     .catch(error => {
+      //       console.log(error);
+      //     })
     },
-    async addPost(text) {
-      const data = {
-        text
-      };
-
-      await postsAddPost(data, localStorage.getItem('your_id'))
-        .then(async response => {
-          if (response.status === 200) {
-            await postsGetPost(localStorage.getItem('your_id'))
-                .then(response => {
-                  if (response.status === 200) {
-                    this.posts = response.data;
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                })
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-    },
-
-    async deletePost(id) {
-      await postsDeletePost(id)
-        .then(async response => {
-          if (response.status === 200) {
-            await postsGetPost(localStorage.getItem('your_id'))
-                .then(response => {
-                  if (response.status === 200) {
-                    this.posts = response.data;
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                })
-          }
-        })
-          .catch(error => {
-            console.log(error);
-          })
-    },
-
-    async likePost(id) {
-      await postsLikePost(id)
-          .then(async response => {
-            if (response.status === 200) {
-              await postsGetPost(this.$route.path.substr(7))
-                  .then(response => {
-                    if (response.status === 200) {
-                      this.posts = response.data;
-                    }
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  })
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          })
-    }
+    //   async addPost(text) {
+    //     const data = {
+    //       text
+    //     };
+    //
+    //     await postsAddPost(data, localStorage.getItem('your_id'))
+    //       .then(async response => {
+    //         if (response.status === 200) {
+    //           await postsGetPost(localStorage.getItem('your_id'))
+    //               .then(response => {
+    //                 if (response.status === 200) {
+    //                   this.posts = response.data;
+    //                 }
+    //               })
+    //               .catch(error => {
+    //                 console.log(error);
+    //               })
+    //         }
+    //       })
+    //       .catch(error => {
+    //         if (error.response.status === 403) {
+    //           alert(1);
+    //         }
+    //       })
+    //   },
+    //
+    //   async deletePost(id) {
+    //     await postsDeletePost(id)
+    //       .then(async response => {
+    //         if (response.status === 200) {
+    //           await postsGetPost(localStorage.getItem('your_id'))
+    //               .then(response => {
+    //                 if (response.status === 200) {
+    //                   this.posts = response.data;
+    //                 }
+    //               })
+    //               .catch(error => {
+    //                 console.log(error);
+    //               })
+    //         }
+    //       })
+    //         .catch(error => {
+    //           console.log(error);
+    //         })
+    //   },
+    //
+    //   async likePost(id) {
+    //     await postsLikePost(id)
+    //         .then(async response => {
+    //           if (response.status === 200) {
+    //             await postsGetPost(this.$route.path.substr(7))
+    //                 .then(response => {
+    //                   if (response.status === 200) {
+    //                     this.posts = response.data;
+    //                   }
+    //                 })
+    //                 .catch(error => {
+    //                   console.log(error);
+    //                 })
+    //           }
+    //         })
+    //         .catch(error => {
+    //           console.log(error);
+    //         })
+    //   }
+    // }
   }
 }
 </script>
