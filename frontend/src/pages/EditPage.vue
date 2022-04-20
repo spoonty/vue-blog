@@ -1,11 +1,12 @@
 <template>
   <form class="edit-form" @submit.prevent="confirmForm">
     <h1>Edit</h1>
-    <my-input class="form-element" v-model="name" placeholder="Name" type="text"></my-input>
-    <my-input class="form-element" v-model="username" placeholder="Username" type="text"></my-input>
-    <my-input class="form-element" v-model="status" placeholder="Status" type="text"></my-input>
-    <my-input class="form-element" v-model="password" placeholder="Password" type="password"></my-input>
-    <my-input class="form-element" v-model="passwordR" placeholder="Repeat password" type="password"></my-input>
+    <my-input class="form-element" :incorrectInput="incorrectInput" v-model="name" placeholder="Name" type="text"></my-input>
+    <my-input class="form-element" :incorrectInput="incorrectInput || userAlreadyExist" v-model="username" placeholder="Username" type="text"></my-input>
+    <my-input class="form-element" :incorrectInput="incorrectInput" v-model="status" placeholder="Status" type="text"></my-input>
+    <my-input class="form-element" :incorrectInput="incorrectInput || incorrectPassword" v-model="password" placeholder="Password" type="password"></my-input>
+    <my-input class="form-element" :incorrectInput="incorrectInput || incorrectPassword" v-model="passwordR" placeholder="Repeat password" type="password"></my-input>
+    <div class="incorrect-input-text" v-if="incorrectInput || userAlreadyExist || incorrectPassword">{{warningText}}</div>
     <confirm-button class="confirm-btn"></confirm-button>
   </form>
 </template>
@@ -22,7 +23,11 @@ export default {
       username: '',
       status: '',
       password: '',
-      passwordR: ''
+      passwordR: '',
+      incorrectInput: false,
+      userAlreadyExist: false,
+      incorrectPassword: false,
+      warningText: ''
     }
   },
 
@@ -57,12 +62,35 @@ export default {
         await usersEditUser(data, localStorage.getItem('your_id'))
           .then(response => {
             if (response.status === 200) {
+              this.incorrectInput = false;
+              this.userAlreadyExist = false;
               this.$router.push('/');
             }
           })
           .catch(error => {
-            console.log(error);
+            switch (error.response.status) {
+              case 403:
+                this.warningText = 'Data is incorrect';
+                this.incorrectInput = true;
+                this.incorrectPassword = false;
+                this.userAlreadyExist = false;
+                break;
+              case 409:
+                this.warningText = 'User with this nickname already exist';
+                this.incorrectInput = false;
+                this.incorrectPassword = false;
+                this.userAlreadyExist = true;
+                break;
+              default:
+                this.warningText = 'Something went wrong'
+            }
           })
+      }
+      else if (this.password !== this.passwordR) {
+        this.warningText = 'Passwords do not match';
+        this.incorrectPassword = true;
+        this.incorrectInput = false;
+        this.userAlreadyExist = false;
       }
     }
   }
@@ -84,6 +112,10 @@ h1 {
   height: 40px;
   padding: 0 15px;
   margin: 15px 0;
+}
+.incorrect-input-text {
+  color: red;
+  margin: 0 auto;
 }
 @media (max-width: 900px) {
   .edit-form {
