@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" v-if="getIsAuth">
     <profile-info
         :key=getProfile.id
         :profile=getProfile
@@ -19,12 +19,17 @@ export default {
 
   methods: {
     ...mapActions(['fetchGetProfile']),
-    ...mapMutations(['resetState'])
+    ...mapMutations(['resetState', 'setIsAuth'])
   },
 
-  computed: mapGetters(['getProfile']),
+  computed: mapGetters(['getProfile', 'getIsAuth']),
 
   async mounted() {
+    if (this.getIsAuth === false) {
+      await this.$router.push('/login');
+      return;
+    }
+
     let userId = localStorage.getItem('your_id');
     if (this.$route.path.includes('users')) {
       userId = this.$route.path.substr(7);

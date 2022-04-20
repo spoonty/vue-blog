@@ -1,32 +1,39 @@
 <template>
   <div class="navbar">
     <a @click="$router.push('/')" class="navbar-title navbar-text" href="#">VueBlog</a>
-    <div class="links">
+    <div class="links" v-if="getIsAuth">
       <a @click="$router.push('/users')" class="navbar-text" href="#">Users</a>
       <span style="margin: 0 10px; color: #f3f3f3;"> | </span>
       <a @click="logout" class="navbar-text" href="#">Logout</a>
+    </div>
+
+    <div class="links" v-else>
+      <a @click="$router.push('/register')" class="navbar-text" href="#">Register</a>
+      <span style="margin: 0 10px; color: #f3f3f3;"> | </span>
+      <a @click="$router.push('/login')" class="navbar-text" href="#">Login</a>
     </div>
   </div>
 </template>
 
 <script>
-import {authLogout} from "@/API/api";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   methods: {
+    ...mapActions(['fetchLogout']),
+
     async logout() {
-      await authLogout()
+      await this.fetchLogout()
         .then(response => {
           if (response.status === 200) {
             this.$router.push('/login');
             localStorage.clear();
           }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+      })
     }
-  }
+  },
+
+  computed: mapGetters(['getIsAuth']),
 }
 </script>
 

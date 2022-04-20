@@ -12,6 +12,7 @@
 import MyInput from "@/components/UI/MyInput.vue";
 import ConfirmButton from "@/components/UI/ConfirmButton.vue";
 import {authLogin} from "@/API/api";
+import {mapMutations, mapActions} from "vuex";
 
 export default {
   data() {
@@ -24,30 +25,30 @@ export default {
   },
   components: { MyInput, ConfirmButton },
   methods: {
+    ...mapMutations(['setIsAuth']),
+    ...mapActions(['fetchLogin']),
+
     async confirmForm() {
       const data = {
         username: this.username,
         password: this.password
       }
 
-      await authLogin(data)
-      .then(response => {
-        if (response.status === 200) {
-          localStorage.setItem('my_token', response.data.token);
-          localStorage.setItem('your_id', response.data.id);
-          this.incorrectData = false;
-          this.$router.push('/');
-        }
-      })
-      .catch(error => {
-        this.incorrectData = true;
-        if (error.response.status === 403) {
-          this.warningText = 'Incorrect login or password';
-        }
-        else {
-          this.warningText = 'Something went wrong';
-        }
-      })
+      await this.fetchLogin(data)
+        .then((response) => {
+          if (response.status === 200) {
+            this.$router.push('/');
+          }
+        })
+        .catch(error => {
+            this.incorrectData = true;
+            if (error.response.status === 403) {
+              this.warningText = 'Incorrect login or password';
+            }
+            else {
+              this.warningText = 'Something went wrong';
+            }
+        })
     }
   }
 }
