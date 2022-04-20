@@ -13,7 +13,7 @@
 <script>
 import MyInput from "@/components/UI/MyInput.vue";
 import ConfirmButton from "@/components/UI/ConfirmButton.vue";
-import {authRegister} from "@/API/api";
+import {mapActions} from "vuex";
 
 export default {
   data() {
@@ -30,6 +30,8 @@ export default {
   },
   components: { MyInput, ConfirmButton },
   methods: {
+    ...mapActions(['fetchRegister']),
+
     async confirmForm() {
       if (this.password === this.passwordR) {
         const data = {
@@ -38,12 +40,10 @@ export default {
           password: this.password
         };
 
-        await authRegister(data)
+        await this.fetchRegister(data)
             .then(response => {
               if (response.status === 200) {
                 this.incorrectInput = false;
-                localStorage.setItem('my_token', response.data.token);
-                localStorage.setItem('your_id', response.data.id);
                 this.$router.push('/');
               }
             })
@@ -57,9 +57,9 @@ export default {
                   break;
                 case 409:
                   this.warningText = 'User with this nickname already exist';
+                  this.userAlreadyExist = true;
                   this.incorrectInput = false;
                   this.incorrectPassword = false;
-                  this.userAlreadyExist = true;
                   break;
                 default:
                   this.warningText = 'Something went wrong'

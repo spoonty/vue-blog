@@ -35,7 +35,7 @@ export default {
       userId = this.$route.path.substr(7);
     }
 
-    await this.fetchGetProfile(userId);
+    await this.fetchGetProfile({userId, returnData: false});
   },
 
   unmounted() {

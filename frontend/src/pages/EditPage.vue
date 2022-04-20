@@ -14,7 +14,7 @@
 <script>
 import MyInput from "@/components/UI/MyInput.vue";
 import ConfirmButton from "@/components/UI/ConfirmButton.vue";
-import { usersGetUser, usersEditUser } from '@/API/api';
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -33,8 +33,8 @@ export default {
 
   components: { MyInput, ConfirmButton },
 
-  mounted() {
-    usersGetUser(localStorage.getItem('your_id'))
+  async mounted() {
+    await this.fetchGetProfile({userId: localStorage.getItem('your_id'), returnData: true})
         .then(response => {
           if (response.status === 200) {
             const data = response.data[0];
@@ -44,12 +44,11 @@ export default {
             this.status = data.status
           }
         })
-        .catch(error => {
-          console.log(error);
-        })
   },
 
   methods: {
+    ...mapActions(['fetchGetProfile', 'fetchEdit']),
+
     async confirmForm() {
       if (this.password === this.passwordR || this.password === '' && this.passwordR === '') {
         const data = {
@@ -59,7 +58,7 @@ export default {
         }
         this.password !== '' ? data['password'] = this.password: false;
 
-        await usersEditUser(data, localStorage.getItem('your_id'))
+        await this.fetchEdit({data, userId: localStorage.getItem('your_id')})
           .then(response => {
             if (response.status === 200) {
               this.incorrectInput = false;
@@ -77,9 +76,9 @@ export default {
                 break;
               case 409:
                 this.warningText = 'User with this nickname already exist';
+                this.userAlreadyExist = true;
                 this.incorrectInput = false;
                 this.incorrectPassword = false;
-                this.userAlreadyExist = true;
                 break;
               default:
                 this.warningText = 'Something went wrong'

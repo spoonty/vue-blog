@@ -3,18 +3,18 @@
     <div class="users-list followed-list">
       <h1 class="list-text">Following</h1>
       <user-item
-          v-for="user in followedOnly"
+          v-for="user in getFollowedUsers"
           :user="user"
-          :key = "users.id"
+          :key = "user.id"
           @follow="followUser"
       ></user-item>
     </div>
     <div class="users-list unfollowed-list">
       <h1 class="list-text">Users</h1>
       <user-item
-          v-for="user in unfollowedOnly"
+          v-for="user in getUnfollowedUsers"
           :user="user"
-          :key = "users.id"
+          :key = "user.id"
           @follow="followUser"
       ></user-item>
     </div>
@@ -23,14 +23,9 @@
 
 <script>
 import UserItem from '@/components/Users/UserItem.vue';
-import {usersGetUsers, usersFollowUser} from '@/API/api';
+import {mapActions, mapGetters} from "vuex";
 
 export default {
-  data() {
-    return {
-      users: []
-    }
-  },
   components: {UserItem},
 
   async mounted() {
@@ -39,48 +34,18 @@ export default {
       return;
     }
 
-    await usersGetUsers()
-      .then(response => {
-        if (response.status === 200) {
-          this.users = response.data;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    await this.fetchGetUsers();
   },
 
   methods: {
-    async followUser(id) {
-      await usersFollowUser(id)
-        .then(async response => {
-          if (response.status === 200) {
-            await usersGetUsers()
-                .then(response => {
-                  if (response.status === 200) {
-                    this.users = response.data;
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                })
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+    ...mapActions(['fetchGetUsers', 'fetchFollowUser']),
+
+    async followUser(userId) {
+      await this.fetchFollowUser(userId);
     }
   },
-  computed: {
-    followedOnly() {
-      const yourId = localStorage.getItem('your_id');
-      return this.users.filter(u => u.followed === true && u.userId != yourId);
-    },
-    unfollowedOnly() {
-      const yourId = localStorage.getItem('your_id');
-      return this.users.filter(u => u.followed === false && u.userId != yourId);
-    }
-  }
+
+  computed: mapGetters(['getFollowedUsers', 'getUnfollowedUsers'])
 }
 </script>
 
