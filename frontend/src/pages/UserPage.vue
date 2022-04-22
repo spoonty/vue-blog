@@ -17,13 +17,6 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
 export default {
   components: { ProfileInfo, ProfilePosts},
 
-  methods: {
-    ...mapActions(['fetchGetProfile']),
-    ...mapMutations(['resetState', 'setIsAuth'])
-  },
-
-  computed: mapGetters(['getProfile', 'getIsAuth']),
-
   async mounted() {
     if (this.getIsAuth === false) {
       await this.$router.push('/login');
@@ -40,7 +33,14 @@ export default {
 
   unmounted() {
     this.resetState();
-  }
+  },
+
+  methods: {
+    ...mapActions(['fetchGetProfile']),
+    ...mapMutations(['resetState', 'setIsAuth'])
+  },
+
+  computed: mapGetters(['getProfile', 'getIsAuth'])
 }
 </script>
 

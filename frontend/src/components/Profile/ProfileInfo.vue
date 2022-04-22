@@ -3,14 +3,17 @@
     <div class="avatar-container">
       <img
           class="avatar"
-          src="https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg"
+          src="https://cdn.onlinewebfonts.com/svg/download_568656.png"
       />
     </div>
     <div class="description-container">
       <div class="profile-name">{{ profile.name }}</div>
       <div class="profile-username">{{ profile.username }}</div>
       <div v-if="profile.status" class="profile-status">{{ profile.status }}</div>
-      <div v-else-if="profile.status === null || !profile.status?.length" class="profile-status"><i>Empty status</i></div>
+      <div
+          v-else-if="profile.status === null || !profile.status?.length"
+          class="profile-status"
+      ><i>Empty status</i></div>
       <button @click="$router.push('/edit')" v-if="isYourPage" class="profile-edit">
         Edit profile
       </button>
@@ -50,6 +53,7 @@ export default {
 }
 .avatar {
   border-radius: 50%;
+  height: 250px;
 }
 .description-container {
   margin-left: 10px;
@@ -65,7 +69,6 @@ export default {
 }
 .profile-status {
   margin-top: 10px;
-  cursor: pointer;
 }
 .profile-edit {
   width: 65%;

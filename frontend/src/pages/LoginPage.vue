@@ -1,17 +1,24 @@
 <template>
   <form class="login-form" @submit.prevent="confirmForm">
     <h1>Login</h1>
-    <my-input class="form-element" :incorrectInput="incorrectData" v-model="username" placeholder="Username" type="text"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectData" v-model="password" placeholder="Password" type="password"></my-input>
-    <div class="incorrect-data-text" v-if="incorrectData">{{warningText}}</div>
-    <confirm-button class="confirm-btn"></confirm-button>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectData"
+        v-model="username" placeholder="Username" type="text"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectData"
+        v-model="password" placeholder="Password" type="password"></my-input>
+    <div
+        class="incorrect-data-text"
+        v-if="incorrectData">{{warningText}}</div>
+    <confirm-button class="confirm-btn">Login</confirm-button>
   </form>
 </template>
 
 <script>
 import MyInput from "@/components/UI/MyInput.vue";
 import ConfirmButton from "@/components/UI/ConfirmButton.vue";
-import {authLogin} from "@/API/api";
 import {mapMutations, mapActions} from "vuex";
 
 export default {
@@ -23,7 +30,9 @@ export default {
       warningText: ''
     }
   },
+
   components: { MyInput, ConfirmButton },
+
   methods: {
     ...mapMutations(['setIsAuth']),
     ...mapActions(['fetchLogin']),

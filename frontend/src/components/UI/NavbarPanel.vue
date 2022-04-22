@@ -41,6 +41,7 @@ export default {
 .navbar {
   width: 100%;
   height: 50px;
+  padding: 0 20px;
   background-color: #00c0c0;
   display: flex;
   align-items: center;
@@ -49,13 +50,9 @@ export default {
 .navbar-title {
   font-size: 30px;
   font-weight: bold;
-  margin-left: 20px;
 }
 .navbar-text {
   text-decoration: none;
   color: white;
-}
-.links {
-  margin-right: 20px
 }
 </style>

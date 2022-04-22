@@ -1,32 +1,24 @@
 <template>
   <div class="content">
-    <div class="users-list followed-list">
-      <h1 class="list-text">Following</h1>
-      <user-item
-          v-for="user in getFollowedUsers"
-          :user="user"
-          :key = "user.id"
-          @follow="followUser"
-      ></user-item>
-    </div>
-    <div class="users-list unfollowed-list">
-      <h1 class="list-text">Users</h1>
-      <user-item
-          v-for="user in getUnfollowedUsers"
-          :user="user"
-          :key = "user.id"
-          @follow="followUser"
-      ></user-item>
-    </div>
+    <users-list
+      :usersList="getFollowedUsers"
+      @follow="followUser"
+    >Following</users-list>
+
+    <users-list
+      :usersList="getUnfollowedUsers"
+      @follow="followUser"
+      class="unfollowed-list"
+    >Users</users-list>
   </div>
 </template>
 
 <script>
-import UserItem from '@/components/Users/UserItem.vue';
+import UsersList from '@/components/Users/UsersList.vue';
 import {mapActions, mapGetters} from "vuex";
 
 export default {
-  components: {UserItem},
+  components: {UsersList},
 
   async mounted() {
     if (!localStorage.getItem('your_id')) {
@@ -54,14 +46,6 @@ export default {
   width: 100%;
   display: grid;
   grid-template-columns: 50% 50%;
-}
-.users-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.list-text {
-  margin-bottom: 20px;
 }
 @media (max-width: 1100px) {
   .content {

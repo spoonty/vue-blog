@@ -2,7 +2,7 @@
   <div class="user-item">
     <img
         class="avatar"
-        src="https://assets.faceit-cdn.net/avatars/ae24192a-0d4c-4e08-9bba-cbfa16c32098_1600452157553.jpg"
+        src="https://cdn.onlinewebfonts.com/svg/download_568656.png"
     />
     <a
         @click="$router.push(`/users/${user.userId}`)"
@@ -38,6 +38,7 @@ export default {
       required: true
     }
   },
+
   methods: {
     followUser() {
       this.$emit('follow', this.user.userId);

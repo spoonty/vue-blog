@@ -1,12 +1,26 @@
 <template>
   <form class="register-form" @submit.prevent="confirmForm">
     <h1>Registration</h1>
-    <my-input class="form-element" :incorrectInput="incorrectInput" v-model="name" placeholder="Name" type="text"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectInput || userAlreadyExist" v-model="username" placeholder="Username" type="text"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectInput || incorrectPassword" v-model="password" placeholder="Password" type="password"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectInput || incorrectPassword" v-model="passwordR" placeholder="Repeat password" type="password"></my-input>
-    <div class="incorrect-input-text" v-if="incorrectInput || userAlreadyExist || incorrectPassword">{{warningText}}</div>
-    <confirm-button class="confirm-btn"></confirm-button>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput"
+        v-model="name" placeholder="Name" type="text"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput || userAlreadyExist"
+        v-model="username" placeholder="Username" type="text"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput || incorrectPassword"
+        v-model="password" placeholder="Password" type="password"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput || incorrectPassword"
+        v-model="passwordR" placeholder="Repeat password" type="password"></my-input>
+    <div
+        class="incorrect-input-text"
+        v-if="incorrectInput || userAlreadyExist || incorrectPassword">{{warningText}}</div>
+    <confirm-button class="confirm-btn">Register</confirm-button>
   </form>
 </template>
 
@@ -28,7 +42,9 @@ export default {
       warningText: ''
     }
   },
+
   components: { MyInput, ConfirmButton },
+
   methods: {
     ...mapActions(['fetchRegister']),
 
@@ -52,14 +68,12 @@ export default {
                 case 403:
                   this.warningText = 'Data is incorrect';
                   this.incorrectInput = true;
-                  this.incorrectPassword = false;
-                  this.userAlreadyExist = false;
+                  this.incorrectPassword = this.userAlreadyExist = false;
                   break;
                 case 409:
                   this.warningText = 'User with this nickname already exist';
                   this.userAlreadyExist = true;
-                  this.incorrectInput = false;
-                  this.incorrectPassword = false;
+                  this.incorrectInput = this.incorrectPassword = false;
                   break;
                 default:
                   this.warningText = 'Something went wrong'
@@ -69,8 +83,7 @@ export default {
       else {
         this.warningText = 'Passwords do not match';
         this.incorrectPassword = true;
-        this.incorrectInput = false;
-        this.userAlreadyExist = false;
+        this.incorrectInput = this.userAlreadyExist = false;
       }
     }
   }

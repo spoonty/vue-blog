@@ -1,7 +1,7 @@
 import {
     authLogin,
     authLogout,
-    authRegister,
+    authRegister, usersDeleteUser,
     usersEditUser,
     usersFollowUser,
     usersGetUser,
@@ -100,6 +100,16 @@ export default {
             const data = params.data;
 
             return await usersEditUser(data, userId);
+        },
+        async fetchDelete(context, userId) {
+            return await usersDeleteUser(userId)
+                .then(response => {
+                    if (response.status === 200) {
+                        localStorage.clear();
+                        context.commit('setIsAuth', false);
+                    }
+                    return response;
+                })
         }
     }
     ,

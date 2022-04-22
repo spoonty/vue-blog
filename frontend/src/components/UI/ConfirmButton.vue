@@ -1,12 +1,6 @@
 <template>
-  <button class="confirm-btn" >Confirm</button>
+  <button class="confirm-btn" ><slot></slot></button>
 </template>
-
-<script>
-export default {
-
-}
-</script>
 
 <style scoped>
 .confirm-btn {

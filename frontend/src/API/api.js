@@ -38,6 +38,10 @@ export const usersFollowUser = async (id) => {
     return await axios.post(URL + 'users/' + id + '/follow', '', getHeaders());
 }
 
+export const usersDeleteUser = async (id) => {
+    return await axios.delete(URL + 'users/' + id, getHeaders());
+}
+
 export const postsGetPost = async (id) => {
     return await axios.get(URL + 'posts/' + id, getHeaders());
 }

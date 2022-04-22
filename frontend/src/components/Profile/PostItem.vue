@@ -28,17 +28,19 @@ export default {
       required: true
     }
   },
-  computed: {
-    isYourPage() {
-      return !this.$route.path.includes('/users/');
-    }
-  },
+
   methods: {
     deletePost() {
       this.$emit('deletePost', this.post.postId);
     },
     likePost() {
       this.$emit('likePost', this.post.postId);
+    }
+  },
+
+  computed: {
+    isYourPage() {
+      return !this.$route.path.includes('/users/');
     }
   }
 }

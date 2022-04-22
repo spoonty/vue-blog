@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import NavbarPanel from '@/components/NavbarPanel.vue';
+import NavbarPanel from '@/components/UI/NavbarPanel.vue';
 
 export default {
   components: { NavbarPanel}

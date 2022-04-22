@@ -15,6 +15,7 @@ export default {
     modelValue: String,
     incorrectInput: Boolean
   },
+
   methods: {
     updateInput(event) {
       this.$emit('update:modelValue', event.target.value);

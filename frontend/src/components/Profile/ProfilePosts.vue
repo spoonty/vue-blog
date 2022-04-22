@@ -42,16 +42,7 @@ export default {
     }
   },
 
-
   components: {PostItem},
-
-  computed: {
-    ...mapGetters(['getPosts']),
-
-    isYourPage() {
-      return !this.$route.path.includes('/users/');
-    }
-  },
 
   async mounted() {
     let userId = localStorage.getItem('your_id');
@@ -99,6 +90,14 @@ export default {
         userId: this.$route.path.substr(7)
       })
     }
+  },
+
+  computed: {
+    ...mapGetters(['getPosts']),
+
+    isYourPage() {
+      return !this.$route.path.includes('/users/');
+    }
   }
 }
 </script>
@@ -117,7 +116,15 @@ export default {
 .input-line {
   width: 100%;
   min-height: 30px;
+  padding: 5px;
   resize: none;
+  border: 2px solid #009393;
+  border-radius: 10px;
+}
+.input-line:focus {
+  border-color: #00c0c0;
+  box-shadow: 0 0 8px #007373;
+  outline: 0 none;
 }
 .add-post-btn {
   height: 50px;

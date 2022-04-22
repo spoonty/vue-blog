@@ -1,13 +1,31 @@
 <template>
   <form class="edit-form" @submit.prevent="confirmForm">
     <h1>Edit</h1>
-    <my-input class="form-element" :incorrectInput="incorrectInput" v-model="name" placeholder="Name" type="text"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectInput || userAlreadyExist" v-model="username" placeholder="Username" type="text"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectInput" v-model="status" placeholder="Status" type="text"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectInput || incorrectPassword" v-model="password" placeholder="Password" type="password"></my-input>
-    <my-input class="form-element" :incorrectInput="incorrectInput || incorrectPassword" v-model="passwordR" placeholder="Repeat password" type="password"></my-input>
-    <div class="incorrect-input-text" v-if="incorrectInput || userAlreadyExist || incorrectPassword">{{warningText}}</div>
-    <confirm-button class="confirm-btn"></confirm-button>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput"
+        v-model="name" placeholder="Name" type="text"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput || userAlreadyExist"
+        v-model="username" placeholder="Username" type="text"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput"
+        v-model="status" placeholder="Status" type="text"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput || incorrectPassword"
+        v-model="password" placeholder="Password" type="password"></my-input>
+    <my-input
+        class="form-element"
+        :incorrectInput="incorrectInput || incorrectPassword"
+        v-model="passwordR" placeholder="Repeat password" type="password"></my-input>
+    <div
+        class="incorrect-input-text"
+        v-if="incorrectInput || userAlreadyExist || incorrectPassword">{{warningText}}</div>
+    <confirm-button class="confirm-btn">Confirm</confirm-button>
+    <confirm-button @click.prevent="deleteUser" style="background-color: #ec1515;">Delete profile</confirm-button>
   </form>
 </template>
 
@@ -19,6 +37,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      id: 0,
       name: '',
       username: '',
       status: '',
@@ -39,6 +58,7 @@ export default {
           if (response.status === 200) {
             const data = response.data[0];
 
+            this.id = data.userId;
             this.name = data.name;
             this.username = data.username;
             this.status = data.status
@@ -47,7 +67,16 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchGetProfile', 'fetchEdit']),
+    ...mapActions(['fetchGetProfile', 'fetchEdit', 'fetchDelete']),
+
+    async deleteUser() {
+      this.fetchDelete(this.id)
+        .then(response => {
+          if (response.status === 200) {
+            this.$router.push('/login');
+          }
+        })
+    },
 
     async confirmForm() {
       if (this.password === this.passwordR || this.password === '' && this.passwordR === '') {
@@ -61,8 +90,7 @@ export default {
         await this.fetchEdit({data, userId: localStorage.getItem('your_id')})
           .then(response => {
             if (response.status === 200) {
-              this.incorrectInput = false;
-              this.userAlreadyExist = false;
+              this.incorrectInput = this.userAlreadyExist = false;
               this.$router.push('/');
             }
           })
@@ -71,14 +99,12 @@ export default {
               case 403:
                 this.warningText = 'Data is incorrect';
                 this.incorrectInput = true;
-                this.incorrectPassword = false;
-                this.userAlreadyExist = false;
+                this.incorrectPassword = this.userAlreadyExist = false;
                 break;
               case 409:
                 this.warningText = 'User with this nickname already exist';
                 this.userAlreadyExist = true;
-                this.incorrectInput = false;
-                this.incorrectPassword = false;
+                this.incorrectInput = this.incorrectPassword = false;
                 break;
               default:
                 this.warningText = 'Something went wrong'
@@ -88,8 +114,7 @@ export default {
       else if (this.password !== this.passwordR) {
         this.warningText = 'Passwords do not match';
         this.incorrectPassword = true;
-        this.incorrectInput = false;
-        this.userAlreadyExist = false;
+        this.incorrectInput = this.userAlreadyExist = false;
       }
     }
   }
